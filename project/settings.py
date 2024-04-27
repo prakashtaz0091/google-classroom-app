@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import dj_database_url
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-np7p7_%d8)^j_tbohy_pc#mz4#&wwy@#m!6ox2*cxufat9a89$'
+SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(' ')
 
 
 # Application definition
@@ -82,7 +83,10 @@ DATABASES = {
     }
 }
 
-DATABASES["default"] = dj_database_url.parse("postgres://google_classroom_app_user:Hf11WqtPHh0MFRUfhRTKpE6aJS203Nyb@dpg-combf90l6cac73d4o2dg-a.singapore-postgres.render.com/google_classroom_app")
+
+database_url = os.environ.get('DATABASE_URL', '')
+
+DATABASES["default"] = dj_database_url.parse(database_url)
 
 
 # postgres://google_classroom_app_user:Hf11WqtPHh0MFRUfhRTKpE6aJS203Nyb@dpg-combf90l6cac73d4o2dg-a.singapore-postgres.render.com/google_classroom_app
