@@ -1,0 +1,119 @@
+{% extends "classroom/base.html" %}
+
+{% block title %}
+Home | {{request.user.profile.role}}
+{% endblock title %}
+
+{% block content %}
+
+
+
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+        <li style="color:red;" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+
+<div class="container my-2">
+    {% if request.user.profile.role == "teacher" %}
+
+        <h5 class="mt-5"> Actions </h5>
+        
+        <a class="btn btn-primary" href="{% url "classroom:create_class" %}">Create Class</a>
+        
+        <hr>
+        
+        <h5 class="mt-5"> Your classrooms </h5>
+
+        {% if classrooms %}
+
+            <div class="d-flex gap-2" >
+            {% for classroom in classrooms %}
+                 <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                    <h5 class="card-title">{{classroom.name}}</h5>
+                    <p class="card-text">{{classroom.description}}</p>
+                    <a class="btn btn-primary" href="{% url "classroom:enter_class_teacher" classroom.id %}">Enter Class</a>
+                    <a class="btn btn-danger" href="{% url "classroom:delete_class" classroom.id %}">Delete Class</a>
+
+                    </div>
+                </div>
+            
+            {% endfor %}
+            </div>
+        {% else %}
+        <p>No available classrooms, you can create one using "<a href="{% url 'classroom:create_class' %}" >create class</a>" action</p>
+        
+        {% endif %}
+
+
+    {% else %}
+
+        <h5 class="mt-5"> Available Classrooms </h5>
+
+        {% if classrooms %}
+
+             <div class="d-flex gap-2" >
+
+                {% for classroom in classrooms %}
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                    <h5 class="card-title">{{classroom.name}}</h5>
+                    <p class="card-text">{{classroom.description}}</p>
+                    <a href="{% url 'classroom:join_class' classroom.id %}" class="card-link btn btn-warning">Join class</a>
+                    </div>
+                </div>
+                
+                {% endfor %}
+
+            </div>
+        {% else %}
+        <p>No classrooms are available right now</p>
+
+        {% endif %}
+
+            <hr>
+            <h5 class="mt-5"> Joined Classrooms </h5>
+
+
+            {% if joined_classrooms %}
+
+            <div class="d-flex gap-2" >
+
+                {% for classroom in joined_classrooms %}
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                    <h5 class="card-title">{{classroom.classroom.name}}</h5>
+                    <p class="card-text">{{classroom.classroom.description}}</p>
+                    <a href="{% url 'classroom:enter_class_student' classroom.id %}" class="card-link btn btn-warning">Enter class</a>
+                    </div>
+                </div>
+
+
+                
+                {% endfor %}   
+            </div>
+            
+            {% else %}
+                <p>You haven't joined any classes till now. Please join as soon as possible</p>
+
+ 
+            
+            {% endif %}
+
+
+
+
+    {% endif %}
+</div>
+
+
+
+
+
+{% endblock content %}

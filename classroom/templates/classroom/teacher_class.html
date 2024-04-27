@@ -1,0 +1,83 @@
+{% extends 'classroom/base.html' %}
+
+{% block title %}
+  Classroom | Teacher
+{% endblock %}
+
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+        <li style="color:red;" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+  <div class="container d-flex">
+    <div class="container" style="max-width: 500px;">
+      <div class="container">
+        <h3 class="my-3">{{ classroom.name|capfirst }} Classroom</h3>
+        <p class="my-3">{{ classroom.description|capfirst }}</p>
+      </div>
+      <hr />
+      <div class="container">
+        <h5 class="my-3">Create Post</h5>
+
+        <form action="{% url 'classroom:create_post' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" name="classroom_id" value="{{classroom.id}}" >
+          <div class="mt-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" name="title" required />
+          </div>
+          <div class="mt-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" aria-label="With textarea" id="description" name="description" required ></textarea>
+          </div>
+          <div class="mt-3">
+            <label for="files" class="form-label">Attachments</label>
+            <input type="file" class="form-control" aria-label="files" id="files" name="file"  required />
+          </div>
+
+          <div class="container mt-3">
+            <label for="">What type of post is this?</label>
+            <div class="form-check mt-3">
+              <input class="form-check-input" type="radio" name="post_type" id="notice" value="notice" required />
+              <label class="form-check-label" for="notice">Notice</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="post_type" id="assignment" value="assignment" required />
+              <label class="form-check-label" for="assignment">Assignment</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="post_type" id="notes" value="notes" required />
+              <label class="form-check-label" for="notes">Notes</label>
+            </div>
+          </div>
+          <button class="btn btn-success mt-3" type="submit">Create Post</button>
+        </form>
+      </div>
+    </div>
+    <hr />
+    <div class="contianer d-flex flex-column my-3">
+      <h2>Activities</h2>
+      {% if classroom_posts %}
+        {% for post in classroom_posts %}
+            <div class="card my-2">
+                <div class="card-body">
+                <h5 class="card-title">{{post.title}}</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary">{{post.post_type}} | {{post.created_at}} | by {{post.user.username}}</h6>
+                <p class="card-text">{{post.description}}</p>
+
+                
+                
+                
+                <a class="btn btn-danger" href="{% url 'classroom:delete_post' post.id %}" class="card-link">Delete</a>
+                <a class="btn btn-warning" href="{{post.post_file.url}}" download >Download Attachment</a>
+                </div>
+            </div>
+        
+        {% endfor %}
+      {% endif %}
+    </div> 
+  </div>
+{% endblock %}

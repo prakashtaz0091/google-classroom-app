@@ -1,0 +1,79 @@
+{% extends "classroom/base.html" %}
+
+
+{% block title %}
+Register | Classroom
+{% endblock title %}
+
+
+{% block navbar %}
+
+<h1 class="text-center my-5 " > Register to Classroom </h1>
+
+
+{% endblock navbar %}
+
+
+{% block content %} 
+<div class="d-flex flex-column align-items-center" >
+<form action="" method="post" >
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li style="color:red;" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+
+    {% csrf_token %}
+    <h3> Account Info </h3>
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Usename</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" name="username" aria-describedby="emailHelp" required >
+        <div id="emailHelp" class="form-text">We'll never share your details with anyone else.</div>
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="password" required>
+    </div>
+    <div class="mb-3">
+        <label for="confirm_password" class="form-label">Confirm Password</label>
+        <input type="password" class="form-control" id="confirm_password" name="confirm_password" required >
+    </div>
+
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="role" id="student" value="student"  required>
+        <label class="form-check-label" for="student">
+          Student
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="role" id="teacher" value="teacher" required >
+        <label class="form-check-label" for="teacher">
+          Teacher
+        </label>
+      </div>
+
+    <hr>
+
+    <h3> Personal Info </h3>
+
+    <div class="mb-3">
+        <label for="first_name" class="form-label">First Name</label>
+        <input type="text" class="form-control" id="first_name" name="first_name" aria-describedby="first_name" required >
+       
+    </div>
+    <div class="mb-3">
+        <label for="last_name" class="form-label">Last Name</label>
+        <input type="text" class="form-control" id="last_name" name="last_name" aria-describedby="last_name" required >
+       
+    </div>
+
+    
+    <button type="submit" class="btn btn-primary">Register</button>
+</form> 
+<a class="btn btn-info my-3"  href="{% url "classroom:login_view" %}" >Already a user? Login</a>
+</div>
+{% endblock content %}
