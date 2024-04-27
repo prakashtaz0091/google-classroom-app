@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -81,6 +82,10 @@ DATABASES = {
     }
 }
 
+DATABASES["default"] = dj_database_url.parse("postgres://google_classroom_app_user:Hf11WqtPHh0MFRUfhRTKpE6aJS203Nyb@dpg-combf90l6cac73d4o2dg-a.singapore-postgres.render.com/google_classroom_app")
+
+
+# postgres://google_classroom_app_user:Hf11WqtPHh0MFRUfhRTKpE6aJS203Nyb@dpg-combf90l6cac73d4o2dg-a.singapore-postgres.render.com/google_classroom_app
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
